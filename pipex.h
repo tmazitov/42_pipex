@@ -26,10 +26,11 @@ typedef	struct s_com_node
 }		t_com_node;
 
 char		**ft_split(char const *str, char ch);
-char	*ft_strjoin(char const *str1, char const *str2);
-t_com_node 	*make_list(char **command_lines, char *env_path);
+char		*ft_strjoin(char const *str1, char const *str2);
+t_com_node 	*make_list(char **command_lines, char *env_path, int com_count);
 t_com_node	*make_node(char *command_line, char *env_path);
 void		*free_list(t_com_node	*node);
+void		*free_split(char **split_result);
 char		*ft_substr(char const *str, unsigned int start, size_t len);
 char    	*find_command_path(const char *program_name, char* env_path);
 

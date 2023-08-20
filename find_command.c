@@ -12,39 +12,35 @@
 
 #include "pipex.h"
 
-void    free_split_res(char **split_res)
-{
-    while (*split_res)
-    {
-        free(*split_res);
-        split_res++;
-    }
-    free(split_res);
-}
-
 char    *find_command_path(const char *command_name, char* env_path) 
 {	
-	char	**env_path_dirs;
+    char    **env_path_dirs;
     char    *command_path;
-    char    sep[1];
+    char    *sep;
+    char    *finished_dir;
+    int	    counter;
 
     if (!env_path)
         return NULL;
-
+    sep = malloc(sizeof(char)*2);
+    if (!sep)
+	return (NULL);
     sep[0] = '/';
+    sep[1] = '\0';
+    counter = 0;
     env_path_dirs = ft_split(env_path, ':');
-    while (*env_path_dirs) {
-
-        command_path = ft_strjoin(*env_path_dirs, sep);
-        command_path = ft_strjoin(command_path, command_name);
-
+    while (env_path_dirs[counter]) {
+        finished_dir = ft_strjoin(env_path_dirs[counter], sep);
+	command_path = ft_strjoin(finished_dir, command_name);
+	free(finished_dir);
         if (access(command_path, X_OK) == 0) {
-            free_split_res(env_path_dirs);
+	    free(sep);
+            free_split(env_path_dirs);
             return (command_path);
         }
         free(command_path);
-        env_path_dirs++;
+        counter++;
     }
-    free_split_res(env_path_dirs);
+    free_split(env_path_dirs);
     return (NULL); // Program not found in any directory in PATH
 }

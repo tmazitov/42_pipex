@@ -47,14 +47,16 @@ void	skip_space(char const *str, int *index, char ch)
 		(*index)++;
 }
 
-void	*free_result(char **result)
+void	*free_split(char **split_result)
 {
 	int counter;
 
 	counter = 0;
-	while (*result)
-		free(result[counter++]);
-	free(result);
+	while (split_result[counter])
+	{
+		free(split_result[counter++]);
+	}
+	free(split_result);
 	return (NULL);
 }
 
@@ -80,7 +82,7 @@ char	**ft_split(char const *str, char ch)
 			continue ;
 		result[wrd_ctn] = ft_substr(str, str_ctn, ctn);
 		if (!result[wrd_ctn++])
-			return (free_result(result));
+			return (free_split(result));
 		str_ctn += ctn;
 	}
 	result[wrd_ctn] = 0;

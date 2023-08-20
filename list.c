@@ -23,7 +23,7 @@ t_com_node	*make_node(char *command_line, char *env_path)
 	if (!node)
 		return (NULL);
 	command_parts = ft_split(command_line, ' ');
-	if (!command_parts)
+	if (!command_parts || !command_parts[0])
 	{
 		free(node);
 		return (NULL);
@@ -48,23 +48,27 @@ void	*free_list(t_com_node	*node)
 	return (NULL);
 }
 
-t_com_node *make_list(char **command_lines, char *env_path)
+t_com_node *make_list(char **command_lines, char *env_path, int com_count)
 {
 	t_com_node	*head;
 	t_com_node	*iter;
+	int		counter;
 
-	if (!command_lines)
+	if (!command_lines || com_count == 0)
 		return (NULL);
-	head = make_node(*command_lines++, env_path);
+	counter = 0;
+	head = make_node(command_lines[counter++], env_path);
 	if (!head)
 		return (NULL);
 	iter = head; 
-	while(*command_lines){
-		iter->next = make_node(*command_lines, env_path);
+	while(command_lines[counter] && counter < com_count)
+	{
+		printf("comm: %s\n", command_lines[counter]);
+		iter->next = make_node(command_lines[counter], env_path);
 		if (!iter->next)
 			return free_list(head);
 		iter = iter->next;
-		command_lines++;
+		counter++;
 	}
 	return (head);
 }
