@@ -6,17 +6,18 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:27:32 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/20 23:08:13 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 13:34:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 int main(int argc, char **argv, char **envp) {
-	char		*inputFilePath;
-	char		*outputFilePath;
-	int			counter;
-	t_com_node	*com_node;
+	char			*inputFilePath;
+	char			*outputFilePath;
+	int				counter;
+	t_com_queue		*com_queue;
+	t_com_node		*com_node;
 	if (argc < 3)
 	{
 		perror("Invalid count of arguments");
@@ -24,12 +25,13 @@ int main(int argc, char **argv, char **envp) {
 	}
 	inputFilePath = argv[1];
 	outputFilePath = argv[argc - 1];
-	com_node = make_list(argv+2, getenv("PATH"), argc - 3);
-	if (!com_node)
+	com_queue = make_queue(argv+2, getenv("PATH"), argc - 3);
+	if (!com_queue)
 	{
 		perror("Invalid creation of the command list");
 		return 1;
 	}
+	com_node = get_node(com_queue);
 	while (com_node && com_node->command_name)
 	{
 		printf("command: %s\n", com_node->command_name);
@@ -40,7 +42,7 @@ int main(int argc, char **argv, char **envp) {
 			printf("	arg: %s\n", com_node->args[counter]);	
 			counter++;
 		}
-		com_node = com_node->next;
+		com_node = get_node(com_queue);
 	}
 
     return 0;

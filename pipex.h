@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/20 23:10:58 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 13:33:55 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,26 @@ typedef	struct s_com_node
 	char				*command_path;
 	char				**args;
 	struct s_com_node	*next;
+	struct s_com_node	*prev;
 }		t_com_node;
+
+typedef	struct s_com_queue
+{
+	t_com_node	*nodes;
+}		t_com_queue;
 
 char		**ft_split(char const *str, char ch);
 char		*ft_strjoin(char const *str1, char const *str2);
-t_com_node 	*make_list(char **command_lines, char *env_path, int com_count);
-t_com_node	*make_node(char *command_line, char *env_path);
-void		*free_list(t_com_node	*node);
 void		*free_split(char **split_result);
 char		*ft_substr(char const *str, unsigned int start, size_t len);
 char    	*find_command_path(const char *program_name, char* env_path);
 
+// QUEUE
+t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count);
+t_com_node	*make_node(char *command_line, char *env_path);
+t_com_node	*get_node(t_com_queue *q);
+t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path);
+t_com_node	*get_first(t_com_queue *q);
+t_com_node	*get_last(t_com_queue *q);
+void		free_q(t_com_queue *q);
 #endif
