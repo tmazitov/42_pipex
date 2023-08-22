@@ -6,11 +6,12 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:04:22 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/20 22:53:56 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:48:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -71,3 +72,58 @@ char	*ft_substr(char const *str, unsigned int start, size_t len)
 	return (sub_str);
 }
 
+char	**text_part_mapi(t_text_part *head)
+{
+	t_text_part	*node;
+	int			node_count;
+	char		**result;
+	
+	node = head;
+	node_count = 0;
+	while (node)
+	{
+		node_count++;
+		node = node -> next;
+	}
+	result = malloc(sizeof(char *) * (node_count + 1));
+	if (!result)
+		return (NULL);
+	node = head;
+	node_count = 0;
+	while (node)
+	{
+		result[node_count++] = node->content;
+		node = node->next;
+	}
+	result[node_count] = NULL;
+	return (result);
+}
+
+char	**darr_union(char **darr1, char **darr2)
+{
+	int		counter1;
+	int		counter2;
+	int		counter_res;
+	char	**result;
+
+	if (!darr1 && !darr2)
+		return (NULL);
+	counter1 = 0;
+	counter2 = 0;
+	while (darr1 && darr1[counter1])
+		counter1++;
+	while (darr2 && darr2[counter2])
+		counter2++;
+	result = malloc(sizeof(char *) * (counter1 + counter2 + 1));
+	if (!result)
+		return (NULL);
+	counter_res = 0;
+	counter1 = 0;
+	while (darr1 && darr1[counter1])
+		result[counter_res++] = darr1[counter1++];
+	counter2 = 0;
+	while (darr2 && darr2[counter2])
+		result[counter_res++] = darr2[counter2++];
+	result[counter_res] = NULL;
+	return (result);
+}

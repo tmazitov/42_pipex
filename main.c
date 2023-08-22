@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:27:32 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 13:34:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:49:49 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int main(int argc, char **argv, char **envp) {
 	int				counter;
 	t_com_queue		*com_queue;
 	t_com_node		*com_node;
+	t_log_session	*log_session;
 	if (argc < 3)
 	{
 		perror("Invalid count of arguments");
@@ -26,6 +27,7 @@ int main(int argc, char **argv, char **envp) {
 	inputFilePath = argv[1];
 	outputFilePath = argv[argc - 1];
 	com_queue = make_queue(argv+2, getenv("PATH"), argc - 3);
+	log_session = NULL;
 	if (!com_queue)
 	{
 		perror("Invalid creation of the command list");
@@ -38,10 +40,8 @@ int main(int argc, char **argv, char **envp) {
 		counter = 0;
 		printf("	path: %s\n", com_node->command_path); 	
 		while(com_node->args[counter])
-		{
-			printf("	arg: %s\n", com_node->args[counter]);	
-			counter++;
-		}
+			printf("	arg: %s\n", com_node->args[counter++]);
+		log_session = exec_node(com_node, log_session);
 		com_node = get_node(com_queue);
 	}
 

@@ -6,13 +6,11 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:41:25 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 13:39:31 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 17:58:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-
 
 t_com_node	*get_last(t_com_queue *q)
 {
@@ -35,7 +33,7 @@ t_com_node	*get_first(t_com_queue *q)
 	iter = q->nodes;
 	while(iter->prev)
 		iter = iter->prev;
-	return (iter);
+	return (iter);	
 }
 
 t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path)

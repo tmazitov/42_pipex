@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 13:38:41 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 18:54:21 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_com_node	*make_node(char *command_line, char *env_path)
 	}
 	node->command_name = command_parts[0];
 	node->command_path = find_command_path(command_parts[0], env_path);
-	node->args = command_parts + 1;
+	node->args = command_parts;
 	node->next = NULL;
 	return (node);
 }
