@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 13:35:48 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/22 13:38:41 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,11 @@ t_com_node	*make_node(char *command_line, char *env_path)
 
 void	free_node(t_com_node *node)
 {
-	
+	if (!node)
+		return ;
+	free(node->command_name);
+	free(node->command_path);
+	free(node->args);
+	node->next = NULL;
+	node->prev = NULL;
 }
