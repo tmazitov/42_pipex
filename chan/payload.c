@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   com_exec_log.c                                     :+:      :+:    :+:   */
+/*   payload.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 16:29:01 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 15:29:54 by tmazitov         ###   ########.fr       */
+/*   Created: 2023/08/26 19:15:33 by tmazitov          #+#    #+#             */
+/*   Updated: 2023/08/26 22:52:22 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include "get_next_line.h"
-
-t_log_chan	*make_log_chan()
-{
-	t_log_chan	*chan;
-	int			pipe_result;
-
-	chan = malloc(sizeof(t_log_chan));
-	if (!chan)
-		return (NULL);
-	chan->side = malloc(sizeof(int) * (2));
-	if (!chan)
-		return (free_log_chan(chan));
-	pipe_result = pipe(chan->side);
-	if (pipe_result == -1)
-	{
-		printf("failed pipe\n");
-		free(chan);
-		return (NULL);
-	}
-	return (chan);
-}
-
-void	*free_log_chan(t_log_chan *chan)
-{
-	if (chan->side)
-		free(chan->side);
-	free(chan);
-	return (NULL);
-}
+#include "chan.h"
 
 t_text_part		*make_res_part(char *result)
 {	
@@ -85,19 +55,17 @@ char	**get_chan_payload(t_log_chan *chan)
 	head = make_res_part(head_line);
 	if (!head)
 		return (NULL);
-
 	iter = head;
-	while (iter && ft_strlen(iter->content) != 0)
+	while (iter && iter->length != 0)
 	{
-		if (iter->content[ft_strlen(iter->content) - 1] == '\n')
-			iter->content[ft_strlen(iter->content) - 1] = '\0';
+		if (iter->content[iter->length - 1] == '\n')
+			iter->content[iter->length - 1] = '\0';
 		iter->next = make_res_part(get_next_line(chan->side[0]));
 		if (!iter->next)
 			break;
 		iter = iter->next;
 	}
 	payload = text_part_mapi(head);
-	int counter = 0;
 	free_res_part(head);
 	return (payload);
 }

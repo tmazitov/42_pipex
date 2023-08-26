@@ -1,1 +1,1 @@
-cc	main.c ft_split.c com_exec.c com_queue.c com_queue_node.c com_queue_utils.c com_exec_log.c pipex.h utils.c get_next_line.c get_next_line.h get_next_line_utils.c find_command.c -fsanitize=address
+cc	main.c ft_split.c com_exec.c com_queue.c com_queue_node.c com_queue_utils.c chan/*.c chan/*.h pipex.h utils.c get_next_line.c get_next_line.h get_next_line_utils.c find_command.c -fsanitize=address

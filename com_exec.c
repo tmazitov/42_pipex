@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 18:38:30 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:47:05 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void test_log(t_log_chan *chan)
 {
-	int	log_fd = open("./test.txt", O_WRONLY | O_CREAT , 0644);
+	int	log_fd = open("./test.txt", O_WRONLY | O_APPEND , 0644);
 	char *buffer = malloc(sizeof(char) * 100 + 1);
 	int read_result = read(chan->side[0], buffer, 100);
 	buffer[100] = '\0';
@@ -41,16 +41,19 @@ int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 	if (fork_pid != 0)
 	{
 		waitpid(fork_pid, &fork_status, 0);
-		close(old_chan->side[0]);
-		return (EXIT_SUCCESS);
+		return (fork_status);
 	}
 	if (fork_pid == 0)
 	{
-		close(new_chan->side[0]);
+		// Read input
 		dup2(old_chan->side[0], STDIN_FILENO);
-		close(old_chan->side[0]);
+		close_read(old_chan);
+
+		// Write output
+		dup2(new_chan->side[1], STDOUT_FILENO);
+		close_write(new_chan);
+
 		execve(command->command_path, command->args, NULL);
-		exit(EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
 }
@@ -64,15 +67,8 @@ t_log_chan		*exec_command(t_com_node *command, t_log_chan *old_chan)
 	new_chan = make_log_chan();
 	if (!new_chan)
 		return (free_log_chan(new_chan));
-	default_fd = dup(STDOUT_FILENO);
-	if (dup2(new_chan->side[1], STDOUT_FILENO) == -1)
-		return (free_log_chan(new_chan));
-	close(new_chan->side[1]);
-	if (exec_node(command, new_chan, old_chan) != EXIT_SUCCESS)
-		return (free_log_chan(new_chan));
-	if (dup2(default_fd, STDOUT_FILENO) == -1)
-		return (free_log_chan(new_chan));
-	close(default_fd);
+	printf("exec: %d\n", exec_node(command, new_chan, old_chan));
+	close_write(new_chan);
 	free_log_chan(old_chan);
 	return (new_chan);
 }

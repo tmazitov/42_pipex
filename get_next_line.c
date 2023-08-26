@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 21:05:33 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 14:03:52 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 21:12:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_text_part	*ft_make_text_part(int fd)
 {
 	t_text_part	*part;
-	int	log_fd = open("./test.txt", O_WRONLY | O_APPEND , 0644);
 	part = malloc(sizeof(t_text_part));
 	if (!part)
 		return (NULL);
@@ -26,9 +25,7 @@ t_text_part	*ft_make_text_part(int fd)
 		free(part);
 		return (NULL);
 	}
-	write(log_fd, "before read\n", 12);
 	part->length = read(fd, part->content, BUFFER_SIZE);
-	write(log_fd, "after read\n", 11);
 	if (part->length == 0 || part->length == -1)
 	{
 		free(part->content);
@@ -37,7 +34,6 @@ t_text_part	*ft_make_text_part(int fd)
 	}
 	part->content[part->length] = '\0';
 	part->rem = 0;
-	close(log_fd);
 	return (part);
 }
 

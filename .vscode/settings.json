@@ -1,14 +1,7 @@
 {
 	"files.associations": {
-		"pipex.h": "c",
-		"iterator": "c",
-		"__node_handle": "c",
-		"_types.h": "c",
-		"__locale": "c",
-		"__string": "c",
-		"string": "c",
-		"string_view": "c",
-		"complex": "c",
-		"get_next_line.h": "c"
+		"chan.h": "c",
+		"locale": "c",
+		"__locale": "c"
 	}
 }

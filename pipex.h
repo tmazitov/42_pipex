@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/25 21:16:03 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:52:18 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include "chan/chan.h"
 # include "get_next_line.h"
 
 #ifndef PIPEX_H
@@ -50,17 +51,6 @@ t_com_node	*get_first(t_com_queue *q);
 t_com_node	*get_last(t_com_queue *q);
 void		free_queue(t_com_queue *q);
 void		free_node(t_com_node *node);
-
-// Logs
-typedef	struct s_log_chan
-{
-	int		*side;
-}		t_log_chan;
-
-t_log_chan	*make_log_chan();
-void		*free_log_chan(t_log_chan *chan);
-char		**get_chan_payload(t_log_chan *chan);
-
 
 // MULTIPROCCESSING
 t_log_chan	*exec_command(t_com_node *command, t_log_chan *old_chan);

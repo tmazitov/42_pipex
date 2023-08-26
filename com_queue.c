@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:16:31 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 13:39:18 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 21:12:26 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count)
 	iter = queue->nodes;
 	while(command_lines[counter] && counter < com_count)
 	{
-		printf("com: %s\n", command_lines[counter]);
 		iter = add_node(queue, command_lines[counter++], env_path);
 		if (!iter)
 		{
