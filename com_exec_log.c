@@ -6,39 +6,40 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:29:01 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 21:38:33 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 15:29:54 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "get_next_line.h"
 
-char	*make_log_file_path(t_com_node *node)
+t_log_chan	*make_log_chan()
 {
-	char	*full_filename;
-	char	*path;
+	t_log_chan	*chan;
+	int			pipe_result;
 
-	if (!node)
+	chan = malloc(sizeof(t_log_chan));
+	if (!chan)
 		return (NULL);
-	full_filename = ft_strjoin(node->command_name, ".txt");
-	path = ft_strjoin("./temp-", full_filename);
-	free(full_filename);
-	return (path);
+	chan->side = malloc(sizeof(int) * (2));
+	if (!chan)
+		return (free_log_chan(chan));
+	pipe_result = pipe(chan->side);
+	if (pipe_result == -1)
+	{
+		printf("failed pipe\n");
+		free(chan);
+		return (NULL);
+	}
+	return (chan);
 }
 
-t_log_session	*make_log_session(t_com_node *node)
+void	*free_log_chan(t_log_chan *chan)
 {
-	t_log_session	*log_session;
-
-	if (!node)
-		return (NULL);
-	log_session = malloc(sizeof(t_log_session));
-	if (!log_session)
-		return (NULL);
-	log_session->path = make_log_file_path(node);
-	log_session->fd = open(log_session->path, O_WRONLY | O_RDONLY | O_APPEND | O_CREAT, 0644);
-	log_session->result = NULL;
-	return (log_session);
+	if (chan->side)
+		free(chan->side);
+	free(chan);
+	return (NULL);
 }
 
 t_text_part		*make_res_part(char *result)
@@ -49,45 +50,54 @@ t_text_part		*make_res_part(char *result)
 		return (NULL);
 	node = malloc(sizeof(t_text_part));
 	if (!node)
+	{
+		free(result);
 		return (NULL);
+	}
+	node->next = NULL;
+	node->rem = 0;
+	node->length = ft_strlen(result);
 	node->content = result;
 	return (node);
 }
 
-char	**fill_log_session(char *log_path)
+void	*free_res_part(t_text_part *node)
 {
-	int				fd;
-	char			*next_line;
+	if (!node)
+		return (NULL);
+	if (node->next)
+		free_res_part(node->next);
+	node->content = NULL;
+	free(node);
+	return (NULL);
+}
+
+char	**get_chan_payload(t_log_chan *chan)
+{
+	char			*head_line;
 	t_text_part		*head;
 	t_text_part		*iter;
+	char			**payload;
 
-	if (!log_path)
+	if (!chan)
 		return (NULL);
-	fd = open(log_path, O_RDONLY);
-	if (!fd)
-	{
-		close(fd);
-		return (NULL);		
-	}
-	next_line = get_next_line(fd);
-	if (!next_line)
-	{
-		close(fd);
-		return (NULL);		
-	}
-	head = make_res_part(next_line);
+	head_line = get_next_line(chan->side[0]);
+	head = make_res_part(head_line);
 	if (!head)
-	{
-		free(next_line);
 		return (NULL);
-	}
+
 	iter = head;
-	while (iter)
+	while (iter && ft_strlen(iter->content) != 0)
 	{
-		iter->content[ft_strlen(iter->content) - 1] = '\0';
-		iter->next = make_res_part(get_next_line(fd));
+		if (iter->content[ft_strlen(iter->content) - 1] == '\n')
+			iter->content[ft_strlen(iter->content) - 1] = '\0';
+		iter->next = make_res_part(get_next_line(chan->side[0]));
+		if (!iter->next)
+			break;
 		iter = iter->next;
 	}
-	close(fd);
-	return text_part_mapi(head);
+	payload = text_part_mapi(head);
+	int counter = 0;
+	free_res_part(head);
+	return (payload);
 }

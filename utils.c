@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:04:22 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 21:48:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/25 22:16:35 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,16 @@ char	*ft_substr(char const *str, unsigned int start, size_t len)
 	return (sub_str);
 }
 
+// OK
 char	**text_part_mapi(t_text_part *head)
 {
 	t_text_part	*node;
 	int			node_count;
 	char		**result;
-	
+
 	node = head;
 	node_count = 0;
-	while (node)
+	while (node && node->content)
 	{
 		node_count++;
 		node = node -> next;
@@ -88,12 +89,12 @@ char	**text_part_mapi(t_text_part *head)
 	result = malloc(sizeof(char *) * (node_count + 1));
 	if (!result)
 		return (NULL);
-	node = head;
+	
 	node_count = 0;
-	while (node)
+	while (head && head->content)
 	{
-		result[node_count++] = node->content;
-		node = node->next;
+		result[node_count++] = head->content;
+		head = head->next;
 	}
 	result[node_count] = NULL;
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 21:37:28 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/25 21:16:03 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,19 @@ void		free_queue(t_com_queue *q);
 void		free_node(t_com_node *node);
 
 // Logs
-typedef	struct s_log_session
+typedef	struct s_log_chan
 {
-	int		fd;
-	char	*path;
-	char	**result;
-}		t_log_session;
+	int		*side;
+}		t_log_chan;
 
-t_log_session	*make_log_session(t_com_node *node);
-char			**fill_log_session(char *log_path);
+t_log_chan	*make_log_chan();
+void		*free_log_chan(t_log_chan *chan);
+char		**get_chan_payload(t_log_chan *chan);
+
 
 // MULTIPROCCESSING
-t_log_session	*exec_node(t_com_node *node, t_log_session	*old_log_session);
+t_log_chan	*exec_command(t_com_node *command, t_log_chan *old_chan);
+
+// TEST
+void test_log(t_log_chan *chan);
 #endif
