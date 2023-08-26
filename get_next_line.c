@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <limits.h>
 
 t_text_part	*ft_make_text_part(int fd)
 {
@@ -72,7 +73,7 @@ char	*get_next_line(int fd)
 	t_text_part			*p;
 	char				*result;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT32_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX)
 		return (NULL);
 	if (!root)
 		root = ft_make_text_part(fd);

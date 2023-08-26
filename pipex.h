@@ -11,9 +11,12 @@
 /* ************************************************************************** */
 
 # include <stdio.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "chan/chan.h"
 # include "get_next_line.h"
 
