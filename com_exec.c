@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 15:28:53 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/26 18:38:30 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 {
 	pid_t			fork_pid;
 	int				fork_status;
-	char			**input_data;
 	char			**payload;
 
 	if (!command || !old_chan || !new_chan)
@@ -48,10 +47,9 @@ int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 	if (fork_pid == 0)
 	{
 		close(new_chan->side[0]);
-		payload = get_chan_payload(old_chan);
+		dup2(old_chan->side[0], STDIN_FILENO);
 		close(old_chan->side[0]);
-		input_data = darr_union(command->args, payload);
-		execve(command->command_path, input_data, NULL);
+		execve(command->command_path, command->args, NULL);
 		exit(EXIT_SUCCESS);
 	}
 	return (EXIT_FAILURE);
