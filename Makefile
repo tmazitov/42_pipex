@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/08/27 21:27:49 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/08/27 21:30:13 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_SRCS	=	src/com_exec.c \
 				src/com_queue_node.c \
 				src/com_queue_utils.c \
 				src/com_queue.c \
-				src/pipex.c \
+				src/main.c 
 SRC_OBJ		=	$(SRC_SRCS:.c=.o)
 
 UTILS_SRCS	=	utils/utils.c \
@@ -42,7 +42,7 @@ UTILS_OBJ	=	$(UTILS_SRCS:.c=.o)
 HEADER		=	src/pipex.h \
 				chan/chan.h \
 				utils/utils.h \
-				get_next_line/get_next_line.h \
+				get_next_line/get_next_line.h
 
 
 #COMMANDS
