@@ -18,7 +18,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "chan/chan.h"
-# include "get_next_line.h"
+# include "get_next_line/get_next_line.h"
 
 #ifndef PIPEX_H
 
