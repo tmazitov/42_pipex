@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
+#    Updated: 2023/08/27 21:27:49 by tmazitov         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 #SETUP
 NAME		=	pipex
 CC			=	gcc
@@ -9,12 +21,10 @@ CHAN_SRCS	=	chan/chan.c \
 				chan/close.c \
 				chan/free.c \
 				chan/payload.c  
-# CHAN_HEAD	=	
 CHAN_OBJ	=	$(CHAN_SRCS:.c=.o)
 
 GNL_SRCS	=	get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c
-# GNL_HEAD	=	
 GNL_OBJ	=	$(GNL_SRCS:.c=.o)
 
 SRC_SRCS	=	src/com_exec.c \
@@ -22,17 +32,14 @@ SRC_SRCS	=	src/com_exec.c \
 				src/com_queue_utils.c \
 				src/com_queue.c \
 				src/pipex.c \
-# SRC_HEAD	=	
 SRC_OBJ		=	$(SRC_SRCS:.c=.o)
 
 UTILS_SRCS	=	utils/utils.c \
 				utils/find_command.c \
 				utils/ft_split.c
-# UTILS_HEAD	=	utils/utils.h
 UTILS_OBJ	=	$(UTILS_SRCS:.c=.o)
 
-HEADER		= 	\
-				src/pipex.h \
+HEADER		=	src/pipex.h \
 				chan/chan.h \
 				utils/utils.h \
 				get_next_line/get_next_line.h \
