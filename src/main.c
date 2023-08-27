@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:27:32 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 22:50:24 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 20:25:39 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	write_output(int output_fd, t_log_chan *chan)
 	chan_payload = get_chan_payload(chan);
 	if (!chan_payload)
 		return ;
-	printf("hi!\n");
-	
 	counter = 0;
 	while (chan_payload[counter])
 	{
@@ -34,7 +32,6 @@ void	write_output(int output_fd, t_log_chan *chan)
 int main(int argc, char **argv, char **envp) {
 	int				input_fd;
 	int				output_fd;
-	int				counter;
 	t_com_queue		*commands;
 	t_com_node		*next_command;
 	t_log_chan		*log_chan;
@@ -43,6 +40,7 @@ int main(int argc, char **argv, char **envp) {
 		perror("Invalid count of arguments");
 		return 1;
 	}
+	envp = NULL;
 	input_fd = open(argv[1], O_RDONLY);
 	if (!input_fd)
 		return EXIT_FAILURE;

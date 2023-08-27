@@ -6,11 +6,11 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:04:40 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/20 19:42:18 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 19:04:28 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 int	calc_words_count(char const *str, char ch)
 {

@@ -6,28 +6,27 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 22:47:05 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 20:08:41 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void test_log(t_log_chan *chan)
-{
-	int	log_fd = open("./test.txt", O_WRONLY | O_APPEND , 0644);
-	char *buffer = malloc(sizeof(char) * 100 + 1);
-	int read_result = read(chan->side[0], buffer, 100);
-	buffer[100] = '\0';
-	write(log_fd, buffer, 100);
-	write(log_fd, "\n", 1);
-	close(log_fd);
-}
+// void test_log(t_log_chan *chan)
+// {
+// 	int	log_fd = open("./test.txt", O_WRONLY | O_APPEND , 0644);
+// 	char *buffer = malloc(sizeof(char) * 100 + 1);
+// 	int read_result = read(chan->side[0], buffer, 100);
+// 	buffer[100] = '\0';
+// 	write(log_fd, buffer, 100);
+// 	write(log_fd, "=======\n", 8);
+// 	close(log_fd);
+// }
 
 int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 {
 	pid_t			fork_pid;
 	int				fork_status;
-	char			**payload;
 
 	if (!command || !old_chan || !new_chan)
 		return (EXIT_FAILURE);
@@ -41,6 +40,7 @@ int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 	if (fork_pid != 0)
 	{
 		waitpid(fork_pid, &fork_status, 0);
+		// test_log(new_chan);
 		return (fork_status);
 	}
 	if (fork_pid == 0)
@@ -60,9 +60,7 @@ int	exec_node(t_com_node *command, t_log_chan *new_chan, t_log_chan *old_chan)
 
 t_log_chan		*exec_command(t_com_node *command, t_log_chan *old_chan)
 {
-	int			default_fd;
 	t_log_chan	*new_chan;
-	char		*payload;
 	
 	new_chan = make_log_chan();
 	if (!new_chan)

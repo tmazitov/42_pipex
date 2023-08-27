@@ -6,11 +6,11 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 23:00:50 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 11:07:32 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 19:32:04 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "utils.h"
 
 char    *find_command_path(const char *command_name, char* env_path) 
 {	
@@ -24,7 +24,7 @@ char    *find_command_path(const char *command_name, char* env_path)
         return NULL;
     sep = malloc(sizeof(char)*2);
     if (!sep)
-	return (NULL);
+	    return (NULL);
     sep[0] = '/';
     sep[1] = '\0';
     counter = 0;
@@ -34,7 +34,7 @@ char    *find_command_path(const char *command_name, char* env_path)
 	command_path = ft_strjoin(finished_dir, command_name);
 	free(finished_dir);
         if (access(command_path, X_OK) == 0) {
-	    free(sep);
+	        free(sep);
             free_split(env_path_dirs);
             return (command_path);
         }

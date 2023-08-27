@@ -5,45 +5,58 @@ FLAGS		=	-Wall -Wextra -Werror
 RM			=	rm -rf
 
 #FILES AND PATH
-HEADER_SRCS	=	pipex.h pipex_bonus.h
-HEAD;ER_DIR	=	includes/
-HEADER		=	$(addprefix $(HEADER_DIR), $(HEADER_SRCS))
+CHAN_SRCS	=	chan/chan.c \
+				chan/close.c \
+				chan/free.c \
+				chan/payload.c  
+# CHAN_HEAD	=	
+CHAN_OBJ	=	$(CHAN_SRCS:.c=.o)
 
-MPATH_SRCS	=	pipex.c childs.c error.c free.c
-MPATH_DIR	=	mandatory/
-MPATH		=	$(addprefix $(MPATH_DIR), $(MPATH_SRCS))
-OBJ_M		=	$(MPATH:.c=.o)
+GNL_SRCS	=	get_next_line/get_next_line.c \
+				get_next_line/get_next_line_utils.c
+# GNL_HEAD	=	
+GNL_OBJ	=	$(GNL_SRCS:.c=.o)
 
-BPATH_SRCS	=	pipex_bonus.c error_bonus.c here_doc_bonus.c\
-							files_bonus.c free_bonus.c child_bonus.c
-BPATH_DIR	=	bonus/
-BPATH		=	$(addprefix $(BPATH_DIR), $(BPATH_SRCS))
-OBJ_B		=	$(BPATH:.c=.o)
+SRC_SRCS	=	src/com_exec.c \
+				src/com_queue_node.c \
+				src/com_queue_utils.c \
+				src/com_queue.c \
+				src/pipex.c \
+# SRC_HEAD	=	
+SRC_OBJ		=	$(SRC_SRCS:.c=.o)
 
-FUNC_SRCS	=	ft_strncmp.c ft_strdup.c ft_split.c ft_strjoin.c
-FUNC_DIR	=	functions/
-FUNC 		=	$(addprefix $(FUNC_DIR), $(FUNC_SRCS))\
-							gnl/get_next_line_utils.c gnl/get_next_line.c
-OBJ_F		=	$(FUNC:.c=.o)
+UTILS_SRCS	=	utils/utils.c \
+				utils/find_command.c \
+				utils/ft_split.c
+# UTILS_HEAD	=	utils/utils.h
+UTILS_OBJ	=	$(UTILS_SRCS:.c=.o)
+
+HEADER		= 	\
+				src/pipex.h \
+				chan/chan.h \
+				utils/utils.h \
+				get_next_line/get_next_line.h \
+
 
 #COMMANDS
 %.o: %.c $(HEADER) Makefile
 	@${CC} ${FLAGS} -c $< -o $@
 
-$(NAME): $(OBJ_F) $(OBJ_M)
-	@$(CC) $(OBJ_F) $(OBJ_M) -o $(NAME)
+$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 all: $(NAME)
 
-bonus: $(OBJ_F) $(OBJ_B)
-	@$(CC) $(OBJ_F) $(OBJ_B) -o $(NAME)
+bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:
-	@$(RM) $(OBJ_M)
-	@$(RM) $(OBJ_F)
-	@$(RM) $(OBJ_B)
+	@$(RM) $(UTILS_OBJ)
+	@$(RM) $(GNL_OBJ)
+	@$(RM) $(CHAN_OBJ)
+	@$(RM) $(SRC_OBJ)
 	@echo -e "$(YELLOW)object files deleted!$(DEFAULT)"
 
 fclean:	clean

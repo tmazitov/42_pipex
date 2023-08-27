@@ -6,11 +6,23 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:15:33 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 22:52:22 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 21:21:57 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "chan.h"
+
+static size_t	ft_strlen(const char *str)
+{
+	size_t	counter;
+
+	counter = 0;
+	if (!str)
+		return (0);
+	while (str[counter])
+		counter++;
+	return (counter);
+}
 
 t_text_part		*make_res_part(char *result)
 {	
@@ -42,6 +54,34 @@ void	*free_res_part(t_text_part *node)
 	return (NULL);
 }
 
+static char	**text_part_mapi(t_text_part *head)
+{
+	t_text_part	*node;
+	int			node_count;
+	char		**result;
+
+	if (!head)
+		return (NULL);
+	node = head;
+	node_count = 0;
+	while (node && node->content)
+	{
+		node_count++;
+		node = node -> next;
+	}
+	result = malloc(sizeof(char *) * (node_count + 1));
+	if (!result)
+		return (NULL);
+	node_count = 0;
+	while (head && head->content)
+	{
+		result[node_count++] = head->content;
+		head = head->next;
+	}
+	result[node_count] = NULL;
+	return (result);
+}
+
 char	**get_chan_payload(t_log_chan *chan)
 {
 	char			*head_line;
@@ -69,3 +109,4 @@ char	**get_chan_payload(t_log_chan *chan)
 	free_res_part(head);
 	return (payload);
 }
+

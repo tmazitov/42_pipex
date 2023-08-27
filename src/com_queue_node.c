@@ -6,11 +6,9 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/22 18:54:21 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 19:29:27 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "pipex.h"
 
@@ -25,7 +23,7 @@ t_com_node	*make_node(char *command_line, char *env_path)
 	if (!node)
 		return (NULL);
 	command_parts = ft_split(command_line, ' ');
-	if (!command_parts || !command_parts[0])
+	if (!command_parts)
 	{
 		free(node);
 		return (NULL);

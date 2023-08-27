@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 19:52:18 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 20:21:45 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include "chan/chan.h"
-# include "get_next_line/get_next_line.h"
+# include "../chan/chan.h"
+# include "../utils/utils.h"
+# include "../get_next_line/get_next_line.h"
 
 #ifndef PIPEX_H
 
@@ -35,15 +36,6 @@ typedef	struct s_com_queue
 {
 	t_com_node	*nodes;
 }		t_com_queue;
-
-size_t		ft_strlen(const char *str);
-char		**text_part_mapi(t_text_part *head);
-char		**darr_union(char **darr1, char **darr2);
-char		**ft_split(char const *str, char ch);
-char		*ft_strjoin(char const *str1, char const *str2);
-void		*free_split(char **split_result);
-char		*ft_substr(char const *str, unsigned int start, size_t len);
-char    	*find_command_path(const char *program_name, char* env_path);
 
 // QUEUE
 t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count);

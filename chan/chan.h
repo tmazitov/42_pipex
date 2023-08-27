@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:02:20 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 19:53:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/27 21:11:15 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ int 		close_write(t_log_chan *chan);
 int			close_read(t_log_chan *chan);
 int			set_write(t_log_chan *chan, int fd);
 int			set_read(t_log_chan *chan, int fd);
-// UTILS
-size_t		ft_strlen(const char *str);
-char		**text_part_mapi(t_text_part *head);
 
 #endif // !CHAN_H
 
