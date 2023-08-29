@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:04:22 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 21:10:51 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/29 20:58:12 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ size_t	ft_strlen(const char *str)
 	while (str[counter])
 		counter++;
 	return (counter);
+}
+
+void panic(char *message)
+{
+	perror(message);
+	exit(EXIT_FAILURE);
 }
 
 char	*ft_strjoin(char const *str1, char const *str2)

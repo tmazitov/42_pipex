@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:02:05 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 22:44:59 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/29 19:16:35 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_log_chan	*make_log_chan()
 {
 	t_log_chan	*chan;
-	int			pipe_result;
 
 	chan = malloc(sizeof(t_log_chan));
 	if (!chan)
@@ -23,8 +22,7 @@ t_log_chan	*make_log_chan()
 	chan->side = malloc(sizeof(int) * (2));
 	if (!chan->side)
 		return (free_log_chan(chan));
-	pipe_result = pipe(chan->side);
-	if (pipe_result == -1)
+	if (pipe(chan->side) == -1)
 	{
 		free(chan->side);
 		free(chan);
