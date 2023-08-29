@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 19:29:27 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/28 21:50:48 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,30 @@ t_com_node	*make_node(char *command_line, char *env_path)
 	command_parts = ft_split(command_line, ' ');
 	if (!command_parts)
 	{
-		free(node);
+		free_node(node);
 		return (NULL);
 	}
 	node->command_name = command_parts[0];
-	node->command_path = find_command_path(command_parts[0], env_path);
 	node->args = command_parts;
+	node->command_path = find_command_path(command_parts[0], env_path);
+	if (!node->command_path)
+	{
+		free_node(node);
+		perror("command not found");
+		exit(EXIT_FAILURE);
+	}
 	node->next = NULL;
 	return (node);
 }
 
-void	free_node(t_com_node *node)
+void	*free_node(t_com_node *node)
 {
 	if (!node)
-		return ;
+		return (NULL);
 	free(node->command_name);
 	free(node->command_path);
 	free(node->args);
 	node->next = NULL;
 	node->prev = NULL;
+	return (NULL);
 }

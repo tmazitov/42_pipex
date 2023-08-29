@@ -1,95 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:27:32 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 20:25:39 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/29 13:59:42 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	write_output(int output_fd, t_log_chan *chan)
+t_log_chan *make_exec_commands(char **com_raw, int com_count, char *path, t_log_chan *data_chan)
 {
-	char	**chan_payload;
-	int		counter;
-
-	chan_payload = get_chan_payload(chan);
-	if (!chan_payload)
-		return ;
-	counter = 0;
-	while (chan_payload[counter])
-	{
-		write(output_fd, chan_payload[counter], ft_strlen(chan_payload[counter]));
-		write(output_fd, "\n", 1);
-		counter++;
-	}
-}
-
-int main(int argc, char **argv, char **envp) {
-	int				input_fd;
-	int				output_fd;
-	t_com_queue		*commands;
 	t_com_node		*next_command;
-	t_log_chan		*log_chan;
-	if (argc < 3)
-	{
-		perror("Invalid count of arguments");
-		return 1;
-	}
-	envp = NULL;
-	input_fd = open(argv[1], O_RDONLY);
-	if (!input_fd)
-		return EXIT_FAILURE;
-	log_chan = make_log_chan();
-	if (!log_chan)
-	{
-		close(input_fd);
-		return EXIT_FAILURE;
-	}
-	close_read(log_chan);
-	if (set_read(log_chan, input_fd) == -1)
-	{
-		free_log_chan(log_chan);
-		return EXIT_FAILURE;
-	}
-	if (close_write(log_chan) == -1)
-	{
-		free_log_chan(log_chan);
-		return EXIT_FAILURE;
-	}
-	commands = make_queue(argv+2, getenv("PATH"), argc - 3);
+	t_com_queue		*commands;
+
+	commands = make_queue(com_raw, path, com_count);
 	if (!commands)
-	{
-		free_log_chan(log_chan);
-		perror("Invalid creation of the command queue");
-		return EXIT_FAILURE;
-	}
+		return (free_log_chan(data_chan));
 	next_command = get_node(commands);
 	while (next_command && next_command->command_path)
 	{
-		printf("com: %s\n", next_command->command_name);
-		printf("\tpath: %s\n", next_command->command_path);
-		log_chan = exec_command(next_command, log_chan);
-		if (!log_chan)
+		data_chan = exec_node(next_command, data_chan);
+		if (!data_chan)
 		{
-			// free_queue(commands);
-			close(input_fd);
-			return EXIT_FAILURE;
+			free_queue(commands);
+			return (free_log_chan(data_chan));			
 		}
 		next_command = get_node(commands);
 	}
-	output_fd = open(argv[argc - 1], O_WRONLY | O_CREAT);
-	if (!output_fd)
-	{
-		close(output_fd);
+	free_queue(commands);
+	return (data_chan);
+}
+
+int main(int argc, char **argv, char **envp) 
+{
+	t_log_chan		*log_chan;
+	char			*path;
+	
+	if (argc < 5)
+		return (EXIT_FAILURE);
+
+	if (check_input(argv[1]) || check_output(argv[argc - 1]))
+		return (EXIT_FAILURE);
+	path = find_path(envp);
+	if (!path)
+		return (EXIT_FAILURE);
+	log_chan = make_input(argv[1]);
+	if (!log_chan)
+		return (EXIT_FAILURE);
+	log_chan = make_exec_commands(argv + 2, argc - 3, path, log_chan);
+	if (!log_chan)
 		return EXIT_FAILURE;
+	if (make_output(argv[argc - 1], log_chan))
+	{
+		free_log_chan(log_chan);
+		return(EXIT_FAILURE);
 	}
-	write_output(output_fd, log_chan);
-	close(output_fd);
-	close(input_fd);
-    return 0;
+    return (EXIT_SUCCESS);
 }

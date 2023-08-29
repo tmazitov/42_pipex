@@ -5,6 +5,7 @@
 		"__locale": "c",
 		"utils.h": "c",
 		"pipex.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"wait.h": "c"
 	}
 }

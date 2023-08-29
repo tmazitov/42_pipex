@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 23:00:50 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 19:32:04 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/29 13:59:06 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,18 @@ char    *find_command_path(const char *command_name, char* env_path)
         counter++;
     }
     free_split(env_path_dirs);
+    return (NULL);
+}
+
+char    *find_path(char **envp)
+{    
+    if (!envp)
+        return (NULL);
+    while (*envp)
+    {
+        if (ft_strnstr(*envp, "PATH", 4))
+            return (*envp + 5);
+        envp++;
+    }
     return (NULL);
 }

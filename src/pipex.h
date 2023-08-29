@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 20:21:45 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/29 13:08:48 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,16 @@ t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path);
 t_com_node	*get_first(t_com_queue *q);
 t_com_node	*get_last(t_com_queue *q);
 void		free_queue(t_com_queue *q);
-void		free_node(t_com_node *node);
+void		*free_node(t_com_node *node);
 
 // MULTIPROCCESSING
-t_log_chan	*exec_command(t_com_node *command, t_log_chan *old_chan);
+t_log_chan	*exec_node(t_com_node *command, t_log_chan *old_chan);
 
-// TEST
-void test_log(t_log_chan *chan);
+// INPUT FILE
+int			check_input(char *input_path);
+t_log_chan	*make_input(char *input_path);
+
+// OUTPUT FILE
+int			check_output(char *output_path);
+int			make_output(char *output_path, t_log_chan *chan);
 #endif
