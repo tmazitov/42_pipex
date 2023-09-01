@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:02:20 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 21:11:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/08/30 09:30:49 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 typedef	struct s_log_chan
 {
 	int		*side;
+	int		status;
 }		t_log_chan;
 
 t_log_chan	*make_log_chan();

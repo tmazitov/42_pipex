@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/29 14:45:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:42:54 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include "../chan/chan.h"
 # include "../utils/utils.h"
 # include "../get_next_line/get_next_line.h"
+# include "../printf/ft_printf.h"
+
 
 #ifndef PIPEX_H
 

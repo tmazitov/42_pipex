@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:41:25 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 21:56:19 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:14:49 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,17 @@ t_com_node	*get_node(t_com_queue *q)
 void	free_queue(t_com_queue *q)
 {
 	t_com_node	*last;
+	t_com_node	*iter;
+	
 	if (!q)
 		return ;
 	last = get_last(q);
+	iter = last;
 	while (last)
 	{
-		free(last->command_name);
-		free(last->command_path);
-		free(last->args);
-		if (last->prev)
-		{
-			last = last->prev;
-			last->next->next = NULL;
-			last->next->prev = NULL;
-			free(last->next);
-			last->next = NULL;
-		}
-		else
-		{
-			last->next = NULL;
-			last->prev = NULL;
-			free(last->next);
-		}
+		iter = last->prev;
+		free_node(last);
+		last = iter;
 	}
+	free(q);
 }

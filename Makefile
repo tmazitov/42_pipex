@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/08/29 13:57:01 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/09/01 19:18:27 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,9 +44,19 @@ UTILS_SRCS	=	utils/utils.c \
 				
 UTILS_OBJ	=	$(UTILS_SRCS:.c=.o)
 
+PRINTF_SRCS	= 	printf/ft_printf.c \
+				printf/ft_puthex.c \
+				printf/ft_putchar.c \
+				printf/ft_putstr.c \
+				printf/ft_putnbr.c \
+				printf/ft_putunbr.c
+
+PRINTF_OBJS =	$(PRINTF_SRCS:.c=.o)
+
 HEADER		=	src/pipex.h \
 				chan/chan.h \
 				utils/utils.h \
+				printf/ft_printf.h \
 				get_next_line/get_next_line.h
 
 
@@ -54,14 +64,14 @@ HEADER		=	src/pipex.h \
 %.o: %.c $(HEADER) Makefile
 	@${CC} ${FLAGS} -c $< -o $@
 
-$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ)
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
+$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) 
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 all: $(NAME)
 
-bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ)
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
+bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) $(PRINTF_OBJS)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:
@@ -69,6 +79,7 @@ clean:
 	@$(RM) $(GNL_OBJ)
 	@$(RM) $(CHAN_OBJ)
 	@$(RM) $(SRC_OBJ)
+	@$(RM) $(PRINTF_OBJS)
 	@echo -e "$(YELLOW)object files deleted!$(DEFAULT)"
 
 fclean:	clean
