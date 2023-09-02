@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:10:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/30 09:36:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:51:31 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../printf/ft_printf.h"
 
 char    *find_command_path(const char *command_name, char* env_path);
 char	**ft_split(char const *str, char ch);
