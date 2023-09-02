@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/01 14:13:12 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:50:56 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	make_command_proccess(t_com_node *com, t_log_chan *new_chan, t_log_ch
 	else if (fork_pid == 0)
 		exec_command(com, new_chan, old_chan, envp);
 	waitpid(fork_pid, &status, 0);
-	printf("status: %d\n", WEXITSTATUS(status));
 	return (WEXITSTATUS(status));
 }
 
@@ -54,14 +53,15 @@ t_log_chan		*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp)
 	if (!new_chan)
 	{
 		free_log_chan(old_chan);
-		return (new_chan);		
+		return (NULL);		
+	}
+	if (!command->command_path)
+	{
+		new_chan->status = 127;
+		free_log_chan(old_chan);
+		return (new_chan);
 	}
 	new_chan->status = make_command_proccess(command, new_chan, old_chan, envp);
-	if (new_chan->status)
-	{
-		free_log_chan(old_chan);
-		return (new_chan);	
-	}
 	close_write(new_chan);
 	free_log_chan(old_chan);
 	return (new_chan);

@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/09/01 19:18:27 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/09/02 12:47:36 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ SRC_SRCS	=	src/com_exec.c \
 				src/com_queue_node.c \
 				src/com_queue_utils.c \
 				src/com_queue.c \
-				src/main.c \
 				src/input.c \
 				src/output.c 
 				
@@ -57,21 +56,26 @@ HEADER		=	src/pipex.h \
 				chan/chan.h \
 				utils/utils.h \
 				printf/ft_printf.h \
+				mandatory/mandatory.h \
 				get_next_line/get_next_line.h
 
+MAND_SRCS	=	mandatory/mandatory.c
+MAND_OBJS	=	$(MAND_SRCS:.c=.o)
 
+BONUS_SRCS	=	bonus/main_bonus.c
+BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
 #COMMANDS
 %.o: %.c $(HEADER) Makefile
 	@${CC} ${FLAGS} -c $< -o $@
 
-$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) 
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
+$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_SRCS)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_SRCS) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 all: $(NAME)
 
-bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) $(PRINTF_OBJS)
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) -o $(NAME)
+bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) $(PRINTF_OBJS) $(BONUS_SRCS)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(BONUS_SRCS) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:

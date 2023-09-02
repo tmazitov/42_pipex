@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:04:22 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/01 15:44:43 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:32:08 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,66 @@ char	*ft_strjoin(char const *str1, char const *str2)
 	return (result);
 }
 
-char	*ft_substr(char const *str, unsigned int start, size_t len)
+size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
-	char	*sub_str;
-	size_t	counter;
-	size_t	str_len;
-	size_t	sub_len;
+	size_t	src_len;
+	size_t	i;
 
-	if (!str)
-		return (NULL);
-	str_len = ft_strlen(str);
-	if (start + len <= str_len)
-		sub_len = len;
-	else if (str_len - 1 < start)
-		sub_len = 0;
-	else
-		sub_len = str_len - start;
-	sub_str = malloc(sizeof(char) * (sub_len + 1));
-	if (!sub_str)
-		return (NULL);
-	counter = 0;
-	while (counter < sub_len && str[counter + start])
+	src_len = 0;
+	while (src[src_len] != '\0')
 	{
-		sub_str[counter] = str[counter + start];
-		counter++;
+		src_len++;
 	}
-	sub_str[sub_len] = '\0';
-	return (sub_str);
+	if (dstsize == 0)
+	{
+		return (src_len);
+	}
+	i = 0;
+	while (src[i] != '\0' && i < (dstsize - 1))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (src_len);
+}
+
+char		*ft_strdup(const char *str)
+{
+	int		i;
+	int		len;
+	char	*new_str;
+
+	len = 0;
+	while (str[len])
+		len++;
+	new_str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!(new_str))
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		new_str[i] = str[i];
+		i++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
+}
+
+char		*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*substr;
+	size_t	new_len;
+
+	if (s == NULL)
+		return (NULL);
+	if ((unsigned int)ft_strlen(s) < start)
+		return (ft_strdup(""));
+	new_len = ft_strlen(s + start);
+	if (new_len < len)
+		len = new_len;
+	if (!(substr = (char *)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	ft_strlcpy(substr, s + start, len + 1);
+	return (substr);
 }

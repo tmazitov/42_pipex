@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/01 15:42:54 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:02:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_com_node	*get_first(t_com_queue *q);
 t_com_node	*get_last(t_com_queue *q);
 void		free_queue(t_com_queue *q);
 void		*free_node(t_com_node *node);
+void		print_node(t_com_node *node);
 
 // MULTIPROCCESSING
 t_log_chan	*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp);

@@ -9,6 +9,7 @@
 		"wait.h": "c",
 		"iterator": "c",
 		"stdio.h": "c",
-		"chrono": "c"
+		"chrono": "c",
+		"__node_handle": "c"
 	}
 }
