@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:04:22 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 22:53:22 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:40:20 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ size_t	ft_strlen(const char *str)
 void panic(char *message, int status)
 {
 	if (message)
+	{
+		ft_printf("pipex: ");
 		ft_printf(message);
+	}
 	exit(status);
 }
 

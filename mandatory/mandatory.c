@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:36:04 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 23:10:36 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:53:00 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,22 @@ void	check_argv(char *input_path, t_com_queue *commands)
 	input_file_is_unavailable = check_input(input_path);
 	if (input_file_is_unavailable)
 	{
-		ft_printf("no such file or directory: %s\n", input_path);
+		ft_printf("pipex: no such file or directory: %s\n", input_path);
 	}
 	commands_is_unavailable = 0;
-	next_command = commands->nodes;
+	next_command = get_first(commands);
 	while (next_command)
 	{
-		if (!next_command->command_path)
-		{
-			commands_is_unavailable = 1;
-			ft_printf("command not found: %s\n", next_command->command_name);
-		}
-		next_command = next_command->prev;
+		// ft_printf("check: %s\n", next_command->command_name);
+		commands_is_unavailable = !next_command->command_path;
+		if (commands_is_unavailable)
+			ft_printf("pipex: command not found: %s\n", next_command->command_name);
+		next_command = next_command->next;
 	}
 	if (input_file_is_unavailable && commands_is_unavailable)
 		exit(127);
 	else if (input_file_is_unavailable && !commands_is_unavailable)
-		exit(1);
+		exit(0);
 	else if (!input_file_is_unavailable && commands_is_unavailable)
 		exit(127);
 }
@@ -63,14 +62,14 @@ t_log_chan *make_exec_commands(char **argv, int com_count, char **envp)
 	next_command = get_node(commands);
 	while (next_command)
 	{
+		print_node(next_command);
 		data_chan = exec_node(next_command, data_chan, envp);
+		printf("result: %p\n", data_chan);
 		if (!data_chan)
 		{
 			free_queue(commands);
 			panic("execute command error", 1);
 		}
-		if (data_chan->status == 127)
-			ft_printf("command not found: %s\n", next_command->command_name);
 		free_node(next_command);
 		next_command = get_node(commands);
 	}
@@ -82,13 +81,14 @@ int main(int argc, char **argv, char **envp)
 {
 	t_log_chan		*log_chan;
 	int				status;
-	
-	if (argc != 5)
-	{
-		ft_printf("invalid count of arguments: %d\n", argc);
-		exit(0);
-	}
+	int				output;
 
+	if (argc != 5)
+		panic("invalid count of arguments", 0);
+	output = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (output < 0)
+		panic("can not to create output file", 1);
+	close(output);
 	log_chan = make_exec_commands(argv, argc - 3, envp);
 	status = make_output(argv[argc - 1], log_chan);
 	free_log_chan(log_chan);
