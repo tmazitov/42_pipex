@@ -5,58 +5,89 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/20 23:00:50 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 16:49:51 by tmazitov         ###   ########.fr       */
+/*   Created: 2023/09/04 17:54:17 by tmazitov          #+#    #+#             */
+/*   Updated: 2023/09/04 19:05:15 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "../get_next_line/get_next_line.h"
 
-char    *find_command_path(char *command_name, char* env_path) 
-{	
-    char    **env_path_dirs;
-    char    *command_path;
-    char    *sep;
-    char    *finished_dir;
-    int	    counter;
+static char	*make_separator(void)
+{
+	char	*separator;
 
-    if (!env_path || !command_name)
-        return NULL;
-    if (ft_strchr(command_name, '/'))
-        return (command_name);
-    sep = malloc(sizeof(char)*2);
-    if (!sep)
-	    return (NULL);
-    sep[0] = '/';
-    sep[1] = '\0';
-    counter = 0;
-    env_path_dirs = ft_split(env_path, ':');
-    while (env_path_dirs[counter]) {
-        finished_dir = ft_strjoin(env_path_dirs[counter], sep);
-        command_path = ft_strjoin(finished_dir, command_name);
-        free(finished_dir);
-        if (!access(command_path, X_OK)) {
-	        free(sep);
-            free_split(env_path_dirs);
-            return (command_path);
-        }
-        free(command_path);
-        counter++;
-    }
-    free_split(env_path_dirs);
-    return (NULL);
+	separator = malloc(sizeof(char) * 2);
+	if (!separator)
+		return (NULL);
+	separator[0] = '/';
+	separator[1] = '\0';
+	return (separator);
 }
 
-char    *find_path(char **envp)
-{    
-    if (!envp)
-        return (NULL);
-    while (*envp)
-    {
-        if (ft_strnstr(*envp, "PATH", 4))
-            return (*envp + 5);
-        envp++;
-    }
-    return (NULL);
+static void *free_null(char *str)
+{
+	if (str)
+		free(str);
+	return (NULL);
+}
+
+static char	*check_path(char *path, char *command_name)
+{
+	char	*directory;
+	char	*command_path;
+	char	*separator;
+	int		ok;
+
+	separator = make_separator();
+	if (!separator)
+		return (NULL);
+	directory = ft_strjoin(path, separator);
+	if (!directory)
+		return free_null(separator);
+	command_path = ft_strjoin(directory, command_name);
+	free(directory);
+	free(separator);
+	if (!command_path)
+		return (NULL);
+	ok = access(command_path, X_OK);
+	if (ok == -1)
+		return free_null(command_path);
+	return (command_path); 
+}
+
+char	*find_command_path(char *command_name, char *env_path)
+{
+	char	**env_path_dirs;
+	char	*result;
+	int		counter;
+
+	if (!env_path || !command_name)
+		return (NULL);
+	if (ft_strchr(command_name, '/'))
+		return (command_name);
+	counter = 0;
+	env_path_dirs = ft_split(env_path, ':');
+	while (env_path_dirs[counter])
+	{
+		result = check_path(env_path_dirs[counter], command_name);
+		if (result)
+			return (result);
+		counter++;
+	}
+	free_split(env_path_dirs);
+	return (NULL);
+}
+
+char	*find_path(char **envp)
+{
+	if (!envp)
+		return (NULL);
+	while (*envp)
+	{
+		if (ft_strnstr(*envp, "PATH", 4))
+			return (*envp + 5);
+		envp++;
+	}
+	return (NULL);
 }

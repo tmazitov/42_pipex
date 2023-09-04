@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 17:03:03 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:21:35 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ t_com_node	*make_node(char *command_line, char *env_path)
 
 void	print_node(t_com_node *node)
 {
-	int counter;
-	
-	counter = 0;
+	int	counter;
+
 	if (!node)
 		return ;
+	counter = 0;
 	ft_printf("node: %p\n", node);
 	ft_printf("\tcommand:\t%s\n", node->command_name);
 	ft_printf("\tpath:\t\t%s\n", node->command_path);
 	ft_printf("\targs:\n");
-	while(node->args[counter])
+	while (node->args[counter])
 		ft_printf("\t\t# %s\n", node->args[counter++]);
 	ft_printf("\tnext:\t\t%p\n", node->next);
 	ft_printf("\tprev:\t\t%p\n", node->prev);

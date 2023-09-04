@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 16:40:26 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/14 18:45:17 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:53:02 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	ft_puthex(unsigned long long address)
 	result += ft_print_low_hex_long(address);
 	return (result);
 }
-
 
 // 16 chars 
 // 0-9 - same like decimal

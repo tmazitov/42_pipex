@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:16:31 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 21:08:43 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:20:37 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count)
 	counter = 0;
 	queue->nodes = NULL;
 	iter = queue->nodes;
-	while(command_lines[counter] && counter < com_count)
+	while (command_lines[counter] && counter < com_count)
 	{
 		iter = add_node(queue, command_lines[counter], env_path);
 		if (!iter)
@@ -36,7 +36,6 @@ t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count)
 		}
 		queue->nodes = iter;
 		counter++;
-	} 
+	}
 	return (queue);
 }
-

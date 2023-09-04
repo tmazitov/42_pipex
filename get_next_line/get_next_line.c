@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 21:05:33 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/26 21:12:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:45:22 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_text_part	*ft_make_text_part(int fd)
 {
 	t_text_part	*part;
+
 	part = malloc(sizeof(t_text_part));
 	if (!part)
 		return (NULL);

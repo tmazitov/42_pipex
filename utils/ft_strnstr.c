@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 13:49:32 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/29 13:50:11 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:30:30 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	ft_strncmp(const char *str1, const char *str2, size_t num)
 		result = (unsigned char)str1[counter] - (unsigned char)str2[counter];
 	return (result);
 }
-
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {

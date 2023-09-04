@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:04:40 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 21:21:37 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:30:15 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	skip_space(char const *str, int *index, char ch)
 
 void	*free_split(char **split_result)
 {
-	int counter;
+	int	counter;
 
 	counter = 0;
 	while (split_result[counter])

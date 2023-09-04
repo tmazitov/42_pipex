@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.h                                        :+:      :+:    :+:   */
+/*   mandatory.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/02 12:36:16 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 12:37:57 by tmazitov         ###   ########.fr       */
+/*   Created: 2023/09/04 18:52:29 by tmazitov          #+#    #+#             */
+/*   Updated: 2023/09/04 18:52:47 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BONUS_H
-# define BONUS_H
+#ifndef MANDATORY_H
+# define MANDATORY_H
 
 # include "../src/pipex.h"
 

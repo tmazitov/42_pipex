@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:15:33 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/08/27 21:21:57 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:15:45 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static size_t	ft_strlen(const char *str)
 	return (counter);
 }
 
-t_text_part		*make_res_part(char *result)
-{	
-	t_text_part		*node;
-	
+t_text_part	*make_res_part(char *result)
+{
+	t_text_part	*node;
+
 	if (!result)
 		return (NULL);
 	node = malloc(sizeof(t_text_part));
@@ -102,11 +102,10 @@ char	**get_chan_payload(t_log_chan *chan)
 			iter->content[iter->length - 1] = '\0';
 		iter->next = make_res_part(get_next_line(chan->side[0]));
 		if (!iter->next)
-			break;
+			break ;
 		iter = iter->next;
 	}
 	payload = text_part_mapi(head);
 	free_res_part(head);
 	return (payload);
 }
-

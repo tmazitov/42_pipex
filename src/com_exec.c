@@ -6,54 +6,46 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 21:50:56 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 19:08:16 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void exec_command(t_com_node *com, t_log_chan *new_chan, t_log_chan *old_chan, char **envp)
+static void	exec(t_com_node *com, t_log_chan *new, t_log_chan *old, char **e)
 {
-	// Read input
-	dup2(old_chan->side[0], STDIN_FILENO);
-	close_read(old_chan);
-	dup2(new_chan->side[1], STDOUT_FILENO);
-	close_write(new_chan);
-	execve(com->command_path, com->args, envp);
+	dup2(old->side[0], STDIN_FILENO);
+	close_read(old);
+	dup2(new->side[1], STDOUT_FILENO);
+	close_write(new);
+	execve(com->command_path, com->args, e);
 }
 
-static int	make_command_proccess(t_com_node *com, t_log_chan *new_chan, t_log_chan *old_chan, char **envp)
+static int	fcomm(t_com_node *com, t_log_chan *new, t_log_chan *old, char **e)
 {
 	pid_t	fork_pid;
 	int		status;
-	
-	if (!com || !old_chan || !new_chan)
+
+	if (!com || !new || !old)
 		return (EXIT_FAILURE);
 	fork_pid = fork();
 	if (fork_pid == -1)
 		return (-1);
 	else if (fork_pid == 0)
-		exec_command(com, new_chan, old_chan, envp);
+		exec(com, new, old, e);
 	waitpid(fork_pid, &status, 0);
 	return (WEXITSTATUS(status));
 }
 
-// static void	*exec_node_fail(t_log_chan *new_chan, t_log_chan *old_chan)
-// {
-// 	free_log_chan(new_chan);
-// 	free_log_chan(old_chan);
-// 	return (NULL);
-// }
-
-t_log_chan		*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp)
+t_log_chan	*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp)
 {
 	t_log_chan	*new_chan;
-	
+
 	new_chan = make_log_chan();
 	if (!new_chan)
 	{
 		free_log_chan(old_chan);
-		return (NULL);		
+		return (NULL);
 	}
 	if (!command->command_path)
 	{
@@ -61,7 +53,7 @@ t_log_chan		*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp)
 		free_log_chan(old_chan);
 		return (new_chan);
 	}
-	new_chan->status = make_command_proccess(command, new_chan, old_chan, envp);
+	new_chan->status = fcomm(command, new_chan, old_chan, envp);
 	close_write(new_chan);
 	free_log_chan(old_chan);
 	return (new_chan);

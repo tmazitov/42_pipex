@@ -6,9 +6,11 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 21:02:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:44:32 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef PIPEX_H
 
 # include <stdio.h>
 # include <limits.h>
@@ -22,10 +24,7 @@
 # include "../get_next_line/get_next_line.h"
 # include "../printf/ft_printf.h"
 
-
-#ifndef PIPEX_H
-
-typedef	struct s_com_node
+typedef struct s_com_node
 {
 	char				*command_name;
 	char				*command_path;
@@ -34,7 +33,7 @@ typedef	struct s_com_node
 	struct s_com_node	*prev;
 }		t_com_node;
 
-typedef	struct s_com_queue
+typedef struct s_com_queue
 {
 	t_com_node	*nodes;
 }		t_com_queue;

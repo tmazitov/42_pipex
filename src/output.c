@@ -6,26 +6,26 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 12:49:36 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 22:32:00 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:42:19 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int write_output(int output_fd, t_log_chan *chan)
+static int	write_output(int output_fd, t_log_chan *chan)
 {
 	char	**chan_payload;
-	int		counter;
+	int		ctn;
 
 	chan_payload = get_chan_payload(chan);
 	if (!chan_payload)
 		return (1);
-	counter = 0;
-	while (chan_payload[counter])
+	ctn = 0;
+	while (chan_payload[ctn])
 	{
-		write(output_fd, chan_payload[counter], ft_strlen(chan_payload[counter]));
-		write(output_fd, "\n", 1);		
-		counter++;
+		write(output_fd, chan_payload[ctn], ft_strlen(chan_payload[ctn]));
+		write(output_fd, "\n", 1);
+		ctn++;
 	}
 	free_split(chan_payload);
 	return (0);
@@ -34,8 +34,8 @@ static int write_output(int output_fd, t_log_chan *chan)
 int	make_output(char *output_path, t_log_chan *output_chan)
 {
 	int	output_fd;
-	int output_result;
-	
+	int	output_result;
+
 	output_fd = open(output_path, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (output_fd < 0)
 		return (1);
@@ -49,8 +49,7 @@ int	make_output(char *output_path, t_log_chan *output_chan)
 	return (output_result);
 }
 
-
 int	check_output(char *output_path)
 {
-	return access(output_path, W_OK);
+	return (access(output_path, W_OK));
 }

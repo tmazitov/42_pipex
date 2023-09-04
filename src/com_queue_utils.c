@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:41:25 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/02 16:46:03 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/04 18:23:43 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_com_node	*get_last(t_com_queue *q)
 	if (!q || !q->nodes)
 		return (NULL);
 	iter = q->nodes;
-	while(iter->next)
+	while (iter->next)
 		iter = iter->next;
 	return (iter);
 }
@@ -31,16 +31,16 @@ t_com_node	*get_first(t_com_queue *q)
 	if (!q || !q->nodes)
 		return (NULL);
 	iter = q->nodes;
-	while(iter->prev)
+	while (iter->prev)
 		iter = iter->prev;
-	return (iter);	
+	return (iter);
 }
 
 t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path)
 {
 	t_com_node	*node;
 	t_com_node	*last;
-	
+
 	node = make_node(command_line, env_path);
 	if (!node)
 		return (NULL);
@@ -54,7 +54,7 @@ t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path)
 t_com_node	*get_node(t_com_queue *q)
 {
 	t_com_node	*first;
-	
+
 	if (!q || !q->nodes)
 		return (NULL);
 	first = get_first(q);
@@ -70,7 +70,7 @@ void	free_queue(t_com_queue *q)
 {
 	t_com_node	*last;
 	t_com_node	*iter;
-	
+
 	if (!q)
 		return ;
 	last = get_last(q);
