@@ -6,7 +6,8 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 12:49:28 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 18:24:21 by tmazitov         ###   ########.fr       */
+/*   Updated: 
+2023/09/05 14:01:34 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +31,7 @@ t_log_chan	*make_input(char *input_path)
 	int			input_fd;
 	t_log_chan	*log_chan;
 
-	input_fd = open(input_path, O_RDONLY, 0777);
+	input_fd = open(input_path, O_RDONLY);
 	if (input_fd < 0)
 		return (NULL);
 	log_chan = setup_input_chan(input_fd);

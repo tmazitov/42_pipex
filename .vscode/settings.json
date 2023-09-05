@@ -17,6 +17,8 @@
 		"algorithm": "c",
 		"string": "c",
 		"string_view": "c",
-		"unordered_map": "c"
+		"unordered_map": "c",
+		"limits.h": "c",
+		"ios": "c"
 	}
 }

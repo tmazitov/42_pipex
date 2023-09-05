@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:41:25 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 18:23:43 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:58:38 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,26 @@ t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path)
 
 t_com_node	*get_node(t_com_queue *q)
 {
-	t_com_node	*first;
+	t_com_node
+		*first;
 
 	if (!q || !q->nodes)
 		return (NULL);
-	first = get_first(q);
-	if (first->next)
-		first->next->prev = NULL;
-	else
-		q->nodes = NULL;
-	first->next = NULL;
+	first = q->first;
+	if (first)
+		q->first = first->next;
+	else 
+		q->first = get_first(q);
 	return (first);
 }
 
-void	free_queue(t_com_queue *q)
+void	*free_queue(t_com_queue *q)
 {
 	t_com_node	*last;
 	t_com_node	*iter;
 
 	if (!q)
-		return ;
+		return (NULL);
 	last = get_last(q);
 	iter = last;
 	while (last)
@@ -82,4 +82,22 @@ void	free_queue(t_com_queue *q)
 		last = iter;
 	}
 	free(q);
+	return (NULL);
+}
+
+
+t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid)
+{
+	t_com_node	*command;
+
+	if (!q || !q->nodes)
+		return (NULL);
+	command = get_first(q);
+	while (command)
+	{
+		if (command->proc_id == pid)
+			return (command);
+		command = command->next;
+	}
+	return (NULL);
 }

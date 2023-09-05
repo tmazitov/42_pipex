@@ -6,55 +6,71 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 19:08:16 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:49:17 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	exec(t_com_node *com, t_log_chan *new, t_log_chan *old, char **e)
+static void	command_proc(t_com_node *command, char **envp)
 {
-	dup2(old->side[0], STDIN_FILENO);
-	close_read(old);
-	dup2(new->side[1], STDOUT_FILENO);
-	close_write(new);
-	execve(com->command_path, com->args, e);
+	t_log_chan	*input;
+	t_log_chan	*output;
+
+	input = command->in_chan;
+	output = command->out_chan;
+	dup2(input->side[0], STDIN_FILENO);
+	close_read(input);
+	dup2(output->side[1], STDOUT_FILENO);
+	close_write(output);
+	execve(command->command_path, command->args, envp);
 }
 
-static int	fcomm(t_com_node *com, t_log_chan *new, t_log_chan *old, char **e)
-{
-	pid_t	fork_pid;
-	int		status;
+// void test_read(t_log_chan *chan)
+// {
+// 	char	buffer[10];
+// 	read( chan->side[0], buffer, 10);
+// 	printf("BUFF: (%s)\nEND\n", buffer);
+// }
 
-	if (!com || !new || !old)
-		return (EXIT_FAILURE);
-	fork_pid = fork();
-	if (fork_pid == -1)
-		return (-1);
-	else if (fork_pid == 0)
-		exec(com, new, old, e);
-	waitpid(fork_pid, &status, 0);
-	return (WEXITSTATUS(status));
+
+void stop_proc(t_com_node *command)
+{
+	if (command->prev && command->prev->proc_in_progress)
+		stop_proc(command->prev);
+	free_log_chan(command->in_chan);
+	command->proc_in_progress = 0;
 }
 
-t_log_chan	*exec_node(t_com_node *command, t_log_chan *old_chan, char **envp)
+static void	support_proc(t_com_node *command, char **envp)
 {
-	t_log_chan	*new_chan;
+	pid_t	proc_id;
 
-	new_chan = make_log_chan();
-	if (!new_chan)
-	{
-		free_log_chan(old_chan);
-		return (NULL);
-	}
-	if (!command->command_path)
-	{
-		new_chan->status = 127;
-		free_log_chan(old_chan);
-		return (new_chan);
-	}
-	new_chan->status = fcomm(command, new_chan, old_chan, envp);
-	close_write(new_chan);
-	free_log_chan(old_chan);
-	return (new_chan);
+	// test_read(command->in_chan);
+	proc_id = fork();
+	if (proc_id == -1)
+		return ;
+	else if (proc_id == 0)
+		command_proc(command, envp);
+	waitpid(proc_id, &command->proc_status, 0);
+	// stop_proc(command);
+	// free_log_chan(command->in_chan);
+	// free_log_chan(command->out_chan);
+	exit(command->proc_status);
+}
+
+void	run_command_proc(t_com_node *command, char **envp)
+{
+	pid_t	proc_id;
+
+	if (!command || !envp)
+		return ;
+	command->proc_in_progress = 1;
+	proc_id = fork();
+	if (proc_id == -1)
+		return ;
+	else if (proc_id == 0)
+		support_proc(command, envp);
+	command->proc_id = proc_id;
+	close_write(command->out_chan);
 }
