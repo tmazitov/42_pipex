@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:41:25 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/05 21:58:38 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:29:17 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,38 +66,19 @@ t_com_node	*get_node(t_com_queue *q)
 	return (first);
 }
 
-void	*free_queue(t_com_queue *q)
-{
-	t_com_node	*last;
-	t_com_node	*iter;
-
-	if (!q)
-		return (NULL);
-	last = get_last(q);
-	iter = last;
-	while (last)
-	{
-		iter = last->prev;
-		free_node(last);
-		last = iter;
-	}
-	free(q);
-	return (NULL);
-}
-
-
-t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid)
+void	*free_queue_chan(t_com_queue *q)
 {
 	t_com_node	*command;
 
-	if (!q || !q->nodes)
-		return (NULL);
-	command = get_first(q);
+	q->chan_closed = 1;
+	command = get_node(q);
 	while (command)
 	{
-		if (command->proc_id == pid)
-			return (command);
-		command = command->next;
+		free_log_chan(command->in_chan);
+		if (!command->next)
+			break ;
+		command = get_node(q);
 	}
+	free_log_chan(command->out_chan);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/05 20:50:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:28:25 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,19 @@ typedef struct s_com_node
 	t_log_chan			*out_chan;
 	int					proc_id;
 	int					proc_status;
-	int					proc_in_progress;
 }		t_com_node;
 
 typedef struct s_com_queue
 {
 	t_com_node	*nodes;
 	t_com_node	*first;
+	int			chan_closed;
 }		t_com_queue;
 
 // QUEUE
 int			make_queue_relationship(t_com_queue *queue);
 t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count);
 t_com_node	*make_node(char *command_line, char *env_path);
-void		stop_proc(t_com_node *command);
-t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid);
 t_com_node	*get_node(t_com_queue *q);
 t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path);
 t_com_node	*get_first(t_com_queue *q);
@@ -58,9 +56,10 @@ void		set_in_chan(t_com_node *node, t_log_chan *chan);
 void		set_out_chan(t_com_node *node, t_log_chan *chan);
 void		*free_queue(t_com_queue *q);
 void		*free_node(t_com_node *node);
-void		print_node(t_com_node *node);
 int			add_input(t_com_queue *queue, char *input_path);
 int			add_output(t_com_queue *queue, char *output_path);
+void		*free_queue_chan(t_com_queue *q);
+t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid);
 // MULTIPROCCESSING
 void	run_command_proc(t_com_node *command, char **envp);
 

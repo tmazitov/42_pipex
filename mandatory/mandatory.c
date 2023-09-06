@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:36:04 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/05 21:55:45 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:37:05 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	check_argv(char *input_path, t_com_queue *commands)
 {
-	int			input_file_is_unavailable;
+	int			input_err;
 	char		*undefind_command;
-	int			last_path_is_unavailable;
+	int			command_err;
 	t_com_node	*command;
 
-	input_file_is_unavailable = check_input(input_path);
-	if (input_file_is_unavailable)
+	input_err = check_input(input_path);
+	if (input_err)
 		ft_printf("pipex: no such file or directory: %s\n", input_path);
 	undefind_command = NULL;
 	command = get_first(commands);
@@ -33,23 +33,21 @@ void	check_argv(char *input_path, t_com_queue *commands)
 		command = command->next;
 	}
 	command = get_last(commands);
-	last_path_is_unavailable = command->command_name == undefind_command;
-	if (input_file_is_unavailable || last_path_is_unavailable)
+	command_err = command->command_name == undefind_command;
+	if (input_err || command_err)
 		free_queue(commands);
-	if (input_file_is_unavailable && last_path_is_unavailable)
+	if (command_err)
 		exit(127);
-	else if (input_file_is_unavailable && !last_path_is_unavailable)
+	else if (input_err && !undefind_command)
 		exit(0);
-	else if (!input_file_is_unavailable && last_path_is_unavailable)
-		exit(127);
 }
 
-t_log_chan	*run(t_com_queue *commands, char **envp, int count)
+int	run(t_com_queue *commands, char **envp, int count)
 {
 	t_com_node	*command;
-	// int			counter;
-	pid_t		pid;
+	int			counter;
 	int			status;
+	pid_t		pid;
 	
 	command = get_node(commands);
 	while (command)
@@ -60,23 +58,23 @@ t_log_chan	*run(t_com_queue *commands, char **envp, int count)
 			free_queue(commands);
 			panic("execute command error", 1);
 		}
-		// print_node(command);
 		command = get_node(commands);
 	}
-	// counter = 0;
-	// while (counter < count)
-	// {
-	// 	pid = wait(&status);
-	// 	command = get_node_by_pid(commands, pid);
-	// 	printf("command done: %s\n", command->command_name);
-	// 	stop_proc(command);
-	// 	counter++;	
-	// }
+	free_queue_chan(commands);
+	counter = 0;
+	while (counter < count)
+	{
+		pid = wait(&status);
+		command = get_node_by_pid(commands, pid);
+		command->proc_status = WEXITSTATUS(status);
+		counter++;	
+	}
+	status = get_last(commands)->proc_status;
 	free_queue(commands);
-	return (NULL);
+	return (status);
 }
 
-t_log_chan	*make_exec_commands(char **argv, int com_count, char **envp)
+int	make_exec_commands(char **argv, int com_count, char **envp)
 {
 	t_com_queue	*commands;
 	char		*path;
@@ -91,7 +89,7 @@ t_log_chan	*make_exec_commands(char **argv, int com_count, char **envp)
 	commands = make_queue(argv + 2, path, com_count);
 	if (!commands)
 		panic("make command queue error", 1);
-	check_argv(argv[1], commands);	
+	check_argv(argv[1], commands);
 	if (add_output(commands, output_path))
 	{
 		free_queue(commands);
@@ -102,23 +100,12 @@ t_log_chan	*make_exec_commands(char **argv, int com_count, char **envp)
 		free_queue(commands);
 		panic("open input file error", 1);
 	}
-	return (run(commands, envp, com_count));
+	return(run(commands, envp, com_count));
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_log_chan		*log_chan;
-	int				status;
-	int				output;
-
 	if (argc != 5)
 		panic("invalid count of arguments", 0);
-	output = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (output < 0)
-		panic("can not to create output file", 1);
-	close(output);
-	log_chan = make_exec_commands(argv, argc - 3, envp);
-	// status = make_output(argv[argc - 1], log_chan);
-	// free_log_chan(log_chan);
-	return (status);
+	return (make_exec_commands(argv, argc - 3, envp));
 }

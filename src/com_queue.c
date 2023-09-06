@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:16:31 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/05 21:49:30 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:29:36 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,29 @@ t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count)
 	if (make_queue_relationship(queue))
 		return (free_queue(queue));
 	queue->first = get_first(queue);
+	queue->chan_closed = 0;
 	return (queue);
+}
+
+void	*free_queue(t_com_queue *q)
+{
+	t_com_node	*last;
+	t_com_node	*iter;
+
+	if (!q)
+		return (NULL);
+	if (!q->chan_closed)
+		free_queue_chan(q);
+	last = get_last(q);
+	iter = last;
+	while (last)
+	{
+		iter = last->prev;
+		free_node(last);
+		last = iter;
+	}
+	free(q);
+	return (NULL);
 }
 
 int	make_queue_relationship(t_com_queue *queue)
