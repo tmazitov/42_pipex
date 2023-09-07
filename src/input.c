@@ -23,6 +23,7 @@ static t_log_chan	*setup_input_chan(int input_fd)
 	close_read(log_chan); 
 	close_write(log_chan);
 	set_read(log_chan, input_fd);
+	set_write(log_chan, -1);
 	return (log_chan);
 }
 
