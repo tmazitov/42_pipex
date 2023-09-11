@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:39:58 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 13:30:50 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:34:57 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	check_argv(char *input_path, t_com_queue *commands)
 	t_com_node	*command;
 
 	input_err = check_input(input_path);
-	printf("heredoc: %d, '%s' \n", check_heredoc(input_path), input_path);
 	if (input_err && !check_heredoc(input_path))
 		ft_printf("pipex: no such file or directory: %s\n", input_path);
 	undefind_command = NULL;

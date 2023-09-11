@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 19:04:40 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 17:30:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:29:00 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ char	**ft_split(char const *str, char ch)
 			return (free_split(result));
 		str_ctn += ctn;
 	}
-	result[wrd_ctn] = 0;
+	result[wrd_ctn] = NULL;
 	return (result);
 }

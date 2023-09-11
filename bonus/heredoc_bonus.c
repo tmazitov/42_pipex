@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 10:43:52 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 13:26:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:13:15 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,17 @@ static int	fill_heredoc(t_log_chan *chan, char	*limiter)
 	while (!buffer || ft_strncmp(buffer, limiter, ft_strlen(buffer) - 1))
 	{
 		if (buffer)
+		{
 			write(chan->side[1], buffer, ft_strlen(buffer));
+			free(buffer);
+		}
 		ft_printf("pipe heredoc> ");
 		buffer = get_next_line(STDIN_FILENO);
 		if (!buffer)
 			return (1);
 	}
 	close_write(chan);
+	free(buffer);
 	return (0);
 }
 
