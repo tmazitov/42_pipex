@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:44:34 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 10:18:11 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 17:44:23 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ static void	command_proc(t_com_node *command, char **envp, t_com_queue *q)
 	{
 		free_queue(q);
 		panic(NULL, 1);
+	}
+	if (!command->path)
+	{
+		free_queue(q);
+		panic(NULL, 127);
 	}
 	dup2(input->side[0], STDIN_FILENO);
 	dup2(output->side[1], STDOUT_FILENO);
