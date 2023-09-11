@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 12:49:36 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/07 19:18:05 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:35:37 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,4 @@ t_log_chan	*make_output(char *output_path)
 		return (NULL);
 	}
 	return (log_chan);
-}
-
-int	check_output(char *output_path)
-{
-	return (access(output_path, W_OK));
 }

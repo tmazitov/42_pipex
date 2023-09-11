@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 12:16:31 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/07 19:17:39 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:30:35 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*free_queue(t_com_queue *q)
 	if (!q)
 		return (NULL);
 	if (!q->chan_closed)
-		free_queue_chan(q);
+		free_queue_relationship(q);
 	last = get_last(q);
 	iter = last;
 	while (last)
@@ -69,6 +69,7 @@ int	make_queue_relationship(t_com_queue *queue)
 
 	if (!queue)
 		return (1);
+	chan = NULL;
 	command = get_first(queue);
 	while (command)
 	{
@@ -77,8 +78,12 @@ int	make_queue_relationship(t_com_queue *queue)
 		chan = make_log_chan();
 		if (!chan)
 			return (1);
-		if (command->next)
-			command->out_chan = chan;
+		if (!command->next)
+		{
+			free_log_chan(chan);
+			break ;
+		}
+		command->out_chan = chan;
 		command = command->next;
 	}
 	return (0);

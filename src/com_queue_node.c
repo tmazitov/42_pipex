@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/07 19:31:34 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:27:22 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,6 @@ t_com_node	*make_node(char *command_line, char *env_path)
 	node->proc_id = -1;
 	node->proc_status = 0;
 	return (node);
-}
-
-void	set_in_chan(t_com_node *node, t_log_chan *chan)
-{
-	node->in_chan = chan;
-}
-
-void	set_out_chan(t_com_node *node, t_log_chan *chan)
-{
-	node->out_chan = chan;
 }
 
 t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid)

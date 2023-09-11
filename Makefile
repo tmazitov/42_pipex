@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/09/07 17:00:08 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/09/11 10:20:29 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,8 @@ MAND_OBJS	=	$(MAND_SRCS:.c=.o)
 
 BONUS_SRCS	=	bonus/main_bonus.c
 BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
+
+
 #COMMANDS
 %.o: %.c $(HEADER) Makefile
 	@${CC} ${FLAGS} -c $< -o $@

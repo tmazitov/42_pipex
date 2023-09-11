@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/07 19:18:47 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:36:02 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,30 +44,30 @@ typedef struct s_com_queue
 	int			chan_closed;
 }		t_com_queue;
 
+// QUEUE NODE
+t_com_node	*make_node(char *command_line, char *env_path);
+void		*free_node(t_com_node *node);
+
 // QUEUE
 int			make_queue_relationship(t_com_queue *queue);
 t_com_queue	*make_queue(char **command_lines, char *env_path, int com_count);
-t_com_node	*make_node(char *command_line, char *env_path);
-t_com_node	*get_node(t_com_queue *q);
-t_com_node	*add_node(t_com_queue *q, char *command_line, char *env_path);
-t_com_node	*get_first(t_com_queue *q);
-t_com_node	*get_last(t_com_queue *q);
-void		set_in_chan(t_com_node *node, t_log_chan *chan);
-void		set_out_chan(t_com_node *node, t_log_chan *chan);
-void		*free_queue(t_com_queue *q);
-void		*free_node(t_com_node *node);
-int			add_input(t_com_queue *queue, char *input_path);
-int			add_output(t_com_queue *queue, char *output_path);
-void		*free_queue_chan(t_com_queue *q);
-t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid);
+t_com_node	*get_node(t_com_queue *queue);
+t_com_node	*add_node(t_com_queue *queue, char *command_line, char *env_path);
+t_com_node	*get_first(t_com_queue *queue);
+t_com_node	*get_last(t_com_queue *queue);
+void		*free_queue(t_com_queue *queue);
+void		*free_queue_relationship(t_com_queue *queue);
+t_com_node	*get_node_by_pid(t_com_queue *queue, pid_t pid);
+
 // MULTIPROCCESSING
-void		run_command_proc(t_com_node *command, char **envp);
+void		run_command_proc(t_com_node *command, char **envp, t_com_queue *q);
 
 // INPUT FILE
+int			add_input(t_com_queue *queue, char *input_path);
 int			check_input(char *input_path);
 t_log_chan	*make_input(char *input_path);
 
 // OUTPUT FILE
-int			check_output(char *output_path);
+int			add_output(t_com_queue *queue, char *output_path);
 t_log_chan	*make_output(char *output_path);
 #endif

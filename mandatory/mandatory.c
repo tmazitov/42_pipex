@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:36:04 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/07 19:37:17 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:30:32 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	run_commands(t_com_queue *commands, char **envp, int count)
 	command = get_node(commands);
 	while (command)
 	{
-		run_command_proc(command, envp);
+		run_command_proc(command, envp, commands);
 		if (command->proc_id == -1)
 		{
 			free_queue(commands);
@@ -98,7 +98,7 @@ int	make_exec_commands(char **argv, int com_count, char **envp)
 	add_input(commands, input_path);
 	add_output(commands, output_path);
 	run_commands(commands, envp, com_count);
-	free_queue_chan(commands);
+	free_queue_relationship(commands);
 	return (wait_commands(commands, com_count));
 }
 
