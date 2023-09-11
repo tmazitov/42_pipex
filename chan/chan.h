@@ -6,12 +6,12 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:02:20 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/06 21:32:59 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:45:46 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHAN_H
-
+# define CHAN_H
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

@@ -6,12 +6,12 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:54:35 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 10:36:02 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:46:03 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-
+# define PIPEX_H
 # include <stdio.h>
 # include <limits.h>
 # include <stdlib.h>

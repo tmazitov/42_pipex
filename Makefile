@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/09/11 10:20:29 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/09/11 13:46:04 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,14 +55,16 @@ PRINTF_OBJS =	$(PRINTF_SRCS:.c=.o)
 HEADER		=	src/pipex.h \
 				chan/chan.h \
 				utils/utils.h \
+				bonus/main_bonus.h \
 				printf/ft_printf.h \
-				mandatory/mandatory.h \
-				get_next_line/get_next_line.h
+				get_next_line/get_next_line.h 
 
 MAND_SRCS	=	mandatory/mandatory.c
 MAND_OBJS	=	$(MAND_SRCS:.c=.o)
 
-BONUS_SRCS	=	bonus/main_bonus.c
+BONUS_SRCS	=	bonus/heredoc_bonus.c \
+				bonus/output_bonus.c \
+				bonus/main_bonus.c
 BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
 
 
