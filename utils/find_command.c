@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:54:17 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 19:05:15 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:38:28 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*make_separator(void)
 	return (separator);
 }
 
-static void *free_null(char *str)
+static void	*free_null(char *str)
 {
 	if (str)
 		free(str);
@@ -44,7 +44,7 @@ static char	*check_path(char *path, char *command_name)
 		return (NULL);
 	directory = ft_strjoin(path, separator);
 	if (!directory)
-		return free_null(separator);
+		return (free_null(separator));
 	command_path = ft_strjoin(directory, command_name);
 	free(directory);
 	free(separator);
@@ -52,7 +52,7 @@ static char	*check_path(char *path, char *command_name)
 		return (NULL);
 	ok = access(command_path, X_OK);
 	if (ok == -1)
-		return free_null(command_path);
+		return (free_null(command_path));
 	return (command_path); 
 }
 
@@ -72,7 +72,10 @@ char	*find_command_path(char *command_name, char *env_path)
 	{
 		result = check_path(env_path_dirs[counter], command_name);
 		if (result)
+		{
+			free_split(env_path_dirs);
 			return (result);
+		}
 		counter++;
 	}
 	free_split(env_path_dirs);

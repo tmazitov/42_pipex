@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 13:35:47 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 18:21:35 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:27:22 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,38 @@ t_com_node	*make_node(char *command_line, char *env_path)
 		free_node(node);
 		return (NULL);
 	}
-	node->command_name = command_parts[0];
+	node->name = command_parts[0];
 	node->args = command_parts;
 	node->next = NULL;
 	node->prev = NULL;
-	node->command_path = find_command_path(command_parts[0], env_path);
+	node->path = find_command_path(command_parts[0], env_path);
+	node->in_chan = NULL;
+	node->out_chan = NULL;
+	node->proc_id = -1;
+	node->proc_status = 0;
 	return (node);
 }
 
-void	print_node(t_com_node *node)
+t_com_node	*get_node_by_pid(t_com_queue *q, pid_t pid)
 {
-	int	counter;
+	t_com_node	*command;
 
-	if (!node)
-		return ;
-	counter = 0;
-	ft_printf("node: %p\n", node);
-	ft_printf("\tcommand:\t%s\n", node->command_name);
-	ft_printf("\tpath:\t\t%s\n", node->command_path);
-	ft_printf("\targs:\n");
-	while (node->args[counter])
-		ft_printf("\t\t# %s\n", node->args[counter++]);
-	ft_printf("\tnext:\t\t%p\n", node->next);
-	ft_printf("\tprev:\t\t%p\n", node->prev);
+	command = get_first(q);
+	while (command)
+	{
+		if (command->proc_id == pid)
+			return (command);
+		command = command->next;
+	}
+	return (NULL);
 }
 
 void	*free_node(t_com_node *node)
 {
 	if (!node)
 		return (NULL);
+	if (!ft_strchr(node->name, '/') && node->path)
+		free(node->path);
 	if (node->args)
 		free_split(node->args);
 	node->next = NULL;

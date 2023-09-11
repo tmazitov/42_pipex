@@ -1,4 +1,0 @@
-1# make the protection of the commands
-2# make the main shorter 
-3# remove the memory leaks
-4# 

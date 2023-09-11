@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandatory.c                                        :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/02 12:36:04 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 10:41:14 by tmazitov         ###   ########.fr       */
+/*   Created: 2023/09/11 10:39:58 by tmazitov          #+#    #+#             */
+/*   Updated: 2023/09/11 13:30:50 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../src/pipex.h"
+#include "main_bonus.h"
 
 void	check_argv(char *input_path, t_com_queue *commands)
 {
@@ -20,7 +20,8 @@ void	check_argv(char *input_path, t_com_queue *commands)
 	t_com_node	*command;
 
 	input_err = check_input(input_path);
-	if (input_err)
+	printf("heredoc: %d, '%s' \n", check_heredoc(input_path), input_path);
+	if (input_err && !check_heredoc(input_path))
 		ft_printf("pipex: no such file or directory: %s\n", input_path);
 	undefind_command = NULL;
 	command = get_first(commands);
@@ -91,12 +92,18 @@ int	make_exec_commands(char **argv, int com_count, char **envp)
 	path = find_path(envp);
 	if (!path)
 		panic("find path error", 1);
-	commands = make_queue(argv + 2, path, com_count);
+	if (check_heredoc(argv[1]))
+		commands = make_queue(argv + 3, path, com_count - 1);
+	else 
+		commands = make_queue(argv + 2, path, com_count);
 	if (!commands)
 		panic("make command queue error", 1);
 	check_argv(argv[1], commands);
-	add_input(commands, input_path);
-	add_output(commands, output_path);
+	if (check_heredoc(argv[1]))
+		add_heredoc(commands, argv[2]);
+	else
+		add_input(commands, input_path);
+	add_output_heredoc(commands, output_path, check_heredoc(argv[1]));
 	run_commands(commands, envp, com_count);
 	free_queue_relationship(commands);
 	return (wait_commands(commands, com_count));
@@ -104,7 +111,7 @@ int	make_exec_commands(char **argv, int com_count, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	if (argc != 5)
+	if (argc < 5)
 		panic("invalid count of arguments", 0);
 	return (make_exec_commands(argv, argc - 3, envp));
 }

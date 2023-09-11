@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:02:05 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/04 18:09:37 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/06 21:32:55 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_log_chan	*make_log_chan(void)
 		free(chan);
 		return (NULL);
 	}
-	chan->status = 0;
 	return (chan);
 }
 
