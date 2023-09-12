@@ -6,7 +6,7 @@
 #    By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/27 21:27:48 by tmazitov          #+#    #+#              #
-#    Updated: 2023/09/11 13:46:04 by tmazitov         ###   ########.fr        #
+#    Updated: 2023/09/12 10:28:36 by tmazitov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ CHAN_OBJ	=	$(CHAN_SRCS:.c=.o)
 
 GNL_SRCS	=	get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c
-GNL_OBJ	=	$(GNL_SRCS:.c=.o)
+GNL_OBJ		=	$(GNL_SRCS:.c=.o)
 
 SRC_SRCS	=	src/com_exec.c \
 				src/com_queue_node.c \
@@ -72,14 +72,14 @@ BONUS_OBJS	=	$(BONUS_SRCS:.c=.o)
 %.o: %.c $(HEADER) Makefile
 	@${CC} ${FLAGS} -c $< -o $@
 
-$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_SRCS)
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_SRCS) -o $(NAME)
+$(NAME): $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_OBJS)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(MAND_OBJS) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 all: $(NAME)
 
-bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) $(PRINTF_OBJS) $(BONUS_SRCS)
-	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(BONUS_SRCS) -o $(NAME)
+bonus: $(UTILS_OBJ) $(GNL_OBJ) $(CHAN_OBJ) $(SRC_OBJ) $(PRINTF_OBJS) $(BONUS_OBJS)
+	@$(CC) $(UTILS_OBJ) $(GNL_OBJ) $(PRINTF_OBJS) $(CHAN_OBJ) $(SRC_OBJ) $(BONUS_OBJS) -o $(NAME)
 	@echo -e "$(GREEN)$(NAME) created!$(DEFAULT)"
 
 clean:
@@ -88,6 +88,8 @@ clean:
 	@$(RM) $(CHAN_OBJ)
 	@$(RM) $(SRC_OBJ)
 	@$(RM) $(PRINTF_OBJS)
+	@$(RM) $(BONUS_OBJS)
+	@$(RM) $(MAND_OBJS)
 	@echo -e "$(YELLOW)object files deleted!$(DEFAULT)"
 
 fclean:	clean
