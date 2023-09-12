@@ -6,7 +6,7 @@
 /*   By: tmazitov <tmazitov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 12:36:04 by tmazitov          #+#    #+#             */
-/*   Updated: 2023/09/11 10:41:14 by tmazitov         ###   ########.fr       */
+/*   Updated: 2023/09/12 10:36:50 by tmazitov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 void	check_argv(char *input_path, t_com_queue *commands)
 {
 	int			input_err;
-	char		*undefind_command;
-	int			command_err;
 	t_com_node	*command;
 
 	input_err = check_input(input_path);
 	if (input_err)
 		ft_printf("pipex: no such file or directory: %s\n", input_path);
-	undefind_command = NULL;
 	command = get_first(commands);
 	while (command)
 	{
@@ -36,7 +33,7 @@ void	check_argv(char *input_path, t_com_queue *commands)
 	}
 }
 
-void	run_commands(t_com_queue *commands, char **envp, int count)
+void	run_commands(t_com_queue *commands, char **envp)
 {
 	t_com_node	*command;
 
@@ -97,7 +94,7 @@ int	make_exec_commands(char **argv, int com_count, char **envp)
 	check_argv(argv[1], commands);
 	add_input(commands, input_path);
 	add_output(commands, output_path);
-	run_commands(commands, envp, com_count);
+	run_commands(commands, envp);
 	free_queue_relationship(commands);
 	return (wait_commands(commands, com_count));
 }
